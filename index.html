@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claire Chan | Portfolio</title>
+    <title>Claire Chan | Professional Portfolio</title>
     <style>
         :root {
             --bg-color: #0f172a;
             --text-color: #f1f5f9;
             --accent-color: #38bdf8;
             --card-bg: #1e293b;
+            --border-color: rgba(56, 189, 248, 0.2);
         }
 
         body {
@@ -19,121 +20,221 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
+            scroll-behavior: smooth;
         }
 
-        section {
-            padding: 80px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+        h2 { font-size: 2.2rem; color: var(--accent-color); text-align: center; margin-bottom: 40px; }
+        .hint { text-align: center; font-size: 0.8rem; color: #64748b; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
 
-        h1, h2 {
-            color: var(--accent-color);
-        }
-
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* --- 個人介紹 Hero Section --- */
+        .hero { 
+            min-height: 90vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
             text-align: center;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            padding-top: 60px;
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
+        .profile-container { margin-bottom: 30px; }
+        
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-color);
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
         }
 
-        .hero p {
-            font-size: 1.25rem;
-            opacity: 0.8;
-        }
+        .hero h1 { font-size: 3rem; margin: 10px 0; color: #fff; }
+        .hero .eng-name { font-size: 1.5rem; color: var(--accent-color); font-weight: 300; margin-bottom: 10px; }
+        .hero .title { font-size: 1.2rem; letter-spacing: 2px; color: #94a3b8; margin-bottom: 25px; }
+        .hero .about-text { max-width: 700px; font-size: 1.05rem; color: #cbd5e1; line-height: 1.8; margin-bottom: 30px; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        /* --- 核心價值區 --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { 
+            background: var(--card-bg); padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color);
+            cursor: pointer; transition: 0.4s; max-height: 160px; overflow: hidden;
         }
+        .card.active { max-height: 600px; border-left-color: #fff; background: #243147; }
+        .card h3 { margin-top: 0; font-size: 1.3rem; color: #fff; }
+        .details { opacity: 0; transition: 0.3s; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; }
+        .card.active .details { opacity: 1; }
+        .card .summary { color: #94a3b8; }
 
-        .card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+        /* --- 專案成就區 --- */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .project-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 16/9; cursor: pointer; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .project-overlay {
+            position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transition: 0.4s; padding: 25px; text-align: center;
         }
+        .project-item:hover .project-overlay { opacity: 1; }
+        .project-item:hover .project-img { transform: scale(1.1); }
+        .btn-more { margin-top: 15px; padding: 8px 22px; border: 1px solid var(--accent-color); color: var(--accent-color); text-decoration: none; border-radius: 20px; font-size: 0.9rem; }
 
-        .cta-button {
-            display: inline-block;
-            background: var(--accent-color);
-            color: var(--bg-color);
-            padding: 12px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 20px;
-            transition: transform 0.3s;
-        }
+        /* --- Modal 彈窗 --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: var(--card-bg); padding: 40px; border-radius: 15px; max-width: 600px; width: 100%; position: relative; border: 1px solid var(--border-color); }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #64748b; }
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-        }
+        /* --- 聯繫區 --- */
+        .contact-section { text-align: center; padding: 120px 20px; background: #162032; }
+        .contact-links { margin-top: 40px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .social-link { color: var(--accent-color); text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .social-link:hover { color: #fff; }
+        .cta-main { display: inline-block; background: var(--accent-color); color: var(--bg-color); padding: 15px 45px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-bottom: 30px; transition: 0.3s; }
+        .cta-main:hover { background: #fff; transform: translateY(-3px); }
 
-        footer {
-            text-align: center;
-            padding: 40px;
-            opacity: 0.5;
-            font-size: 0.9rem;
-        }
+        footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; border-top: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
     <section class="hero">
-        <h1>跨界邏輯，驅動國際商務</h1>
-        <p>結合資通訊背景與國貿實務的專案管理人才</p>
-        <a href="#contact" class="cta-button">與我聯繫</a>
+        <div class="profile-container">
+            <img src="IMG_9133.JPEG" alt="Claire Chan" class="profile-img">
+        </div>
+        <div class="eng-name">Claire Chan</div>
+        <h1>詹妮臻</h1>
+        <div class="title">跨界邏輯 | 專案管理 | 國際貿易</div>
+        <p class="about-text">
+            淡江資傳與 ITI 貿協培訓背景，具備流暢的中英商務溝通與簡報實力。擅長將數位思維與商務邏輯結合，曾擔任華山創意園區大型畢業展覽影像總監，並具備展覽規劃、進度控管及跨團隊協作實務。擁有將複雜的需求結構化的能力，為團隊創造兼具邏輯與視覺競爭力的商務價值。
+        </p>
+        <a href="#contact" class="btn-more" style="border-radius: 4px; padding: 12px 30px;">與我聯繫</a>
     </section>
 
-    <section id="problem">
-        <h2>面對全球化挑戰</h2>
-        <p>當前的企業在擴張時，常在技術研發與市場對接、以及品牌視覺傳達上遇到斷層...</p>
-    </section>
-
-    <section id="solution">
-        <h2>我的核心價值</h2>
+    <section id="values">
+        <h2>核心價值</h2>
+        <div class="hint">點擊卡片以展開詳細經歷</div>
         <div class="grid">
-            <div class="card">
-                <h3>結構化商務策略</h3>
-                <p>運用邏輯分析模型，將複雜數據轉化為可執行的國貿與物流策略。</p>
+            <div class="card" onclick="toggleDetails(this)">
+                <h3>結構化專案控管</h3>
+                <p class="summary">精準掌控 20+ 專案全生命週期，確保高品質準時交付。</p>
+                <div class="details">
+                    <ul>
+                        <li><strong>策略性排程：</strong> 曾統籌 20+ 支影片，建立發布行事曆，對齊節慶與贊助商時程。</li>
+                        <li><strong>流程管理：</strong> 具備拆解複雜任務能力，能主動排除執行障礙，確保產出品質。</li>
+                    </ul>
+                </div>
             </div>
-            <div class="card">
-                <h3>跨領域轉化能力</h3>
-                <p>有效串接技術端與商業端，消除溝通隔閡，提升專案效率。</p>
+            <div class="card" onclick="toggleDetails(this)">
+                <h3>跨領域轉化與協調</h3>
+                <p class="summary">具備翻譯需求的能力，整合碎片化資訊為邏輯提案。</p>
+                <div class="details">
+                    <ul>
+                        <li><strong>資源整合：</strong> 將跨組別資訊重新整合為具敘事邏輯的產出，確保對齊視覺調性。</li>
+                        <li><strong>需求轉化：</strong> 擅長將需求轉化為具體提案，並根據反饋優化，確保共識達成。</li>
+                    </ul>
+                </div>
             </div>
-            <div class="card">
-                <h3>商務視覺敘事</h3>
-                <p>具備影像導演經驗，能為國際展覽與品牌建立強大的視覺競爭力。</p>
+            <div class="card" onclick="toggleDetails(this)">
+                <h3>邏輯驅動的商務決策</h3>
+                <p class="summary">運用結構化架構撰寫專業報告，引導團隊達成實質決策。</p>
+                <div class="details">
+                    <ul>
+                        <li><strong>結構化撰述：</strong> 熟練撰寫結構化報告，定義背景與目標，並提供數據支撐的執行建議。</li>
+                        <li><strong>會議引導：</strong> 具備模擬會議主席經驗，擅長搜集跨部門資料、引導決策討論。</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="about">
-        <h2>關於 Claire</h2>
-        <p>從資通訊傳播領域啟程，到 ITI 國際貿易研究所的深造。我專注於將數位思維導入商務流程，曾主導多項模擬參展與品牌行銷計畫。我熱衷於解決複雜問題，並在國際舞台上展現台灣品牌的價值。</p>
+    <section id="projects">
+        <h2>專案成就</h2>
+        <div class="project-grid">
+            <div class="project-item" onclick="openModal('proj1')">
+                <img src="https://images.unsplash.com/photo-1492691523567-30730029dffc?auto=format&fit=crop&w=800&q=80" alt="抱抱革命 Hug Revolution" class="project-img">
+                <div class="project-overlay">
+                    <h3>專案成就與執行績效</h3>
+                    <p>影像總監與跨組別協作</p>
+                    <span class="btn-more">了解更多</span>
+                </div>
+            </div>
+            <div class="project-item" onclick="openModal('proj2')">
+                <img src="https://images.unsplash.com/photo-1512314889357-e157c22f938d?auto=format&fit=crop&w=800&q=80" alt="全英文商務簡報競賽" class="project-img">
+                <div class="project-overlay">
+                    <h3>Flint紙電池</h3>
+                    <p>高壓敏捷執行</p>
+                    <span class="btn-more">了解更多</span>
+                </div>
+            </div>
+            <div class="project-item" onclick="openModal('proj3')">
+                <img src="https://images.unsplash.com/photo-1492691523567-30730029dffc?auto=format&fit=crop&w=800&q=80" alt="跨文化市場進入策略" class="project-img">
+                <div class="project-overlay">
+                    <h3>跨文化市場定位與產品在地化</h3>
+                    <p>整合行銷與攤位規劃</p>
+                    <span class="btn-more">了解更多</span>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="contact" style="text-align: center;">
-        <h2>讓我們開始合作</h2>
-        <p>正在尋找具備專案管理潛力與國際視野的夥伴嗎？</p>
-        <a href="mailto:your-email@example.com" class="cta-button">發送郵件</a>
+    <section id="contact" class="contact-section">
+        <h2>聯繫我</h2>
+        <p style="max-width: 700px; margin: 0 auto 30px;">
+            感謝您的閱覽。如果您對我的背景或過往專案有興趣，並且正在尋找具備邏輯思維與執行力的夥伴，歡迎隨時聯繫。
+        </p>
+        <a href="mailto:nijenchan02@gmail.com" class="cta-main">發送郵件聯繫</a>
+        
+        <div class="contact-links">
+            <a href="https://youtube.com/playlist?list=PLeprbZIfYKAKkfQjo4vyUtk1rPA7oEvSZ&si=ctk0TCMZ-7wQkjvE" target="_blank" class="social-link">YouTube 作品集</a>
+            <a href="https://www.linkedin.com/in/ni-jen-chan" target="_blank" class="social-link">LinkedIn</a>
+            <a href="english resume .pdf" target="_blank" class="social-link">檢視完整履歷 (Resume)</a>
+        </div>
     </section>
 
-    <footer>
-        &copy; 2026 Claire Chan. All Rights Reserved.
-    </footer>
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
 
+    <footer>&copy; 2026 Claire Chan. All Rights Reserved.</footer>
+
+    <script>
+        function toggleDetails(card) { card.classList.toggle('active'); }
+
+        const projectData = {
+            proj1: {
+                title: "抱抱革命 Hug Revolutio",
+                desc: "擔任影像總監，整合跨組別碎片資訊，製作展覽開幕片，成功在華山文創園區展出。協調贊助商需求並轉化為具體視覺產出，確保展覽調性一致。",
+                link: "hhttps://artogo.co/zh-TW/exhibition/hugrevolution/work/4f087341de4f"
+            },
+            proj2: {
+                title: "全英文商務簡報競賽",
+                desc: "模擬 Flint 紙電池公司業務進行B2B市場行銷，於短時間收集資料並建構視覺化英語簡報，展現高抗壓性與臨場應對力。",
+                link: "https://canva.link/j6c1r16dtv9bnuz"
+            },
+            proj3: {
+                title: "跨文化市場進入策略",
+                desc: "透過調整包裝、內容物與定價策略，將玉井芒果乾進入日本市場。利用 AI 模擬展示攤位，幫助視覺化提案",
+                link: "https://canva.link/rgr2x0e691w362g"
+            }
+        };
+
+        function openModal(projId) {
+            const data = projectData[projId];
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <h2 style="text-align:left; margin-bottom:15px; font-size:1.5rem;">${data.title}</h2>
+                <p style="color:#cbd5e1; margin-bottom:25px;">${data.desc}</p>
+                <a href="${data.link}" target="_blank" class="cta-main" style="padding:10px 25px;">查看相關連結</a>
+            `;
+            document.getElementById('projectModal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('projectModal').style.display = 'none'; }
+        window.onclick = function(event) { if (event.target == document.getElementById('projectModal')) closeModal(); }
+    </script>
 </body>
 </html>
