@@ -33,51 +33,55 @@
     }
     .hero h1 { font-size: 3.5rem; color: var(--name-color); font-weight: 700; margin: 0; }
     /* --- 核心價值卡片統整版 --- */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-    .card { 
-        background: #ffffff; padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color); cursor: pointer; 
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); max-height: 105px; overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);position: relative;
-    }
-    .card:hover { max-height: 800px; background: #f8fafc; transform: translateY(-5px); }
-    .details { padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 15px; color: #475569; }
-    .details ul { padding-left: 20px; margin-top: 10px; list-style-type: disc !important; }
-    .card.active { max-height: 800px; background: #f8fafc; border-left-color: var(--name-color); }
-    .card h3 { color: var(--name-color); margin-top: 0; font-size: 1.3rem; margin-bottom: 10px; }
-    .summary { font-size: 1rem; color: #64748b; margin-bottom: 1.5; }
-    .details li { margin-bottom: 12px; line-height: 1.6; display: list-item; }
-    .details strong { font-weight: bold; color: var(--name-color); display: inline-block; margin-right: 5px; }
+/* --- 核心價值：視覺樣式整合版 --- */
+.card h3 { 
+    color: var(--name-color); 
+    margin-top: 0; 
+    font-size: 1.3rem; 
+    margin-bottom: 10px; 
+}
 
-    /* --- 專案成就：16:9 精確對齊與一秒一跳 --- */
-     .project-container { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 80px; 
-    }
-        
-    .project-row { 
-        display: flex; 
-        align-items: center; 
-        gap: 40px; 
-    }
+.summary { 
+    font-size: 1rem; 
+    color: #64748b; 
+    margin-bottom: 0; /* 縮小間距，防止撐開卡片 */
+}
 
-    .project-row:nth-child(even) { flex-direction: row-reverse; }
-        
-    .slideshow-viewport { 
-        width: 500px; height: 281px; overflow: hidden; border-radius: 12px; 
+/* 這是重點：平常隱藏，hover 才出現 */
+.details { 
+    padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 15px; color: #475569;opacity: 0; /* 平常透明 */
+    visibility: hidden;    /* 平常不佔空間/不可見 */ transition: opacity 0.4s ease; /* 淡淡地浮現 */ }
+
+.card:hover .details { opacity: 1; visibility: visible; }
+
+/* 清單與粗體樣式保留 */
+.details ul { padding-left: 20px; margin-top: 10px; list-style-type: disc !important; }
+.details li { margin-bottom: 12px; line-height: 1.6; display: list-item; }
+.details strong { font-weight: bold; color: var(--name-color); display: inline-block; margin-right: 5px; }
+
+
+/* --- 專案成就：16:9 精確對齊與一秒一跳 --- */
+  .project-container { display: flex; flex-direction: column; gap: 80px; }
+  .project-row { display: flex; align-items: center; gap: 40px; }
+  .project-row:nth-child(even) { flex-direction: row-reverse; }
+
+    .slideshow-viewport { width: 500px; height: 281px; overflow: hidden; border-radius: 12px; 
         flex-shrink: 0; background: #eee; }
-    .slideshow-track { display: flex; height: 100%; }
+    .slideshow-track { display: flex; height: 100%; animation-play-state: paused; /* 預設靜止 */ }
     .slideshow-track img { width: 500px; height: 281px; object-fit: cover; flex-shrink: 0; }
 
+/* 只有滑鼠移到該列（row）時才啟動動畫 */
+.project-row:nth-child(1):hover .slideshow-track { animation: slide-p1 20s steps(10) infinite !important; 
+    animation-play-state: running; }
+.project-row:nth-child(2):hover .slideshow-track { animation: slide-p2 12s steps(6) infinite !important; 
+    animation-play-state: running; }
+.project-row:nth-child(3):hover .slideshow-track { animation: slide-p3 10s steps(5) infinite !important; 
+    animation-play-state: running; }
 
-    /* 精確位移計算法：-(總張數-1)/總張數 */
-    @keyframes slide-p1 { 0% { transform: translateX(0); } 100% { transform: translateX(-90.909%); } }
-    @keyframes slide-p2 { 0% { transform: translateX(0); } 100% { transform: translateX(-85.714%); } }
-    @keyframes slide-p3 { 0% { transform: translateX(0); } 100% { transform: translateX(-83.333%); } }
-
-    .project-row:nth-child(1):hover .slideshow-track { animation: slide-p1 20s steps(10) infinite !important; }
-    .project-row:nth-child(2):hover .slideshow-track { animation: slide-p2 12s steps(6) infinite !important; }
-    .project-row:nth-child(3):hover .slideshow-track { animation: slide-p3 10s steps(5) infinite !important; }
+/* 精確位移百分比 */
+@keyframes slide-p1 { 0% { transform: translateX(0); } 100% { transform: translateX(-90.909%); } }
+@keyframes slide-p2 { 0% { transform: translateX(0); } 100% { transform: translateX(-85.714%); } }
+@keyframes slide-p3 { 0% { transform: translateX(0); } 100% { transform: translateX(-83.333%); } }
 
 
     /* 基礎排版其餘部分保持不變... */
