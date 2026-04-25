@@ -36,7 +36,7 @@
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
     .card { 
         background: #ffffff; padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color); cursor: pointer; 
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); max-height: 135px; overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); max-height: 105px; overflow: hidden;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);position: relative;
     }
     .card:hover { max-height: 800px; background: #f8fafc; transform: translateY(-5px); }
@@ -75,9 +75,9 @@
     @keyframes slide-p2 { 0% { transform: translateX(0); } 100% { transform: translateX(-85.714%); } }
     @keyframes slide-p3 { 0% { transform: translateX(0); } 100% { transform: translateX(-83.333%); } }
 
-    .project-row:nth-child(1):hover .slideshow-track { animation: slide-p1 10s steps(10) infinite !important; }
-    .project-row:nth-child(2):hover .slideshow-track { animation: slide-p2 6s steps(6) infinite !important; }
-    .project-row:nth-child(3):hover .slideshow-track { animation: slide-p3 5s steps(5) infinite !important; }
+    .project-row:nth-child(1):hover .slideshow-track { animation: slide-p1 20s steps(10) infinite !important; }
+    .project-row:nth-child(2):hover .slideshow-track { animation: slide-p2 12s steps(6) infinite !important; }
+    .project-row:nth-child(3):hover .slideshow-track { animation: slide-p3 10s steps(5) infinite !important; }
 
 
     /* 基礎排版其餘部分保持不變... */
