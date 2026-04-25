@@ -32,32 +32,64 @@
         margin-bottom: 15px; font-weight: 600; 
     }
     .hero h1 { font-size: 3.5rem; color: var(--name-color); font-weight: 700; margin: 0; }
-    /* --- 核心價值卡片統整版 --- */
-/* --- 核心價值：視覺樣式整合版 --- */
-.card h3 { 
-    color: var(--name-color); 
-    margin-top: 0; 
-    font-size: 1.3rem; 
-    margin-bottom: 10px; 
-}
+     /* --- 核心價值卡片統整版 --- */
+    .grid { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+        gap: 20px; 
+    }
 
-.summary { 
-    font-size: 1rem; 
-    color: #64748b; 
-    margin-bottom: 0; /* 縮小間距，防止撐開卡片 */
-}
+    .card { 
+        background: #ffffff; 
+        padding: 30px; 
+        border-radius: 8px; 
+        border-left: 4px solid var(--accent-color);
+        cursor: pointer; 
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        max-height: 160px; 
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        position: relative;
+    }
 
-/* 這是重點：平常隱藏，hover 才出現 */
-.details { 
-    padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 15px; color: #475569;opacity: 0; /* 平常透明 */
-    visibility: hidden;    /* 平常不佔空間/不可見 */ transition: opacity 0.4s ease; /* 淡淡地浮現 */ }
+    .card:hover { transform: translateY(-5px); }
 
-.card:hover .details { opacity: 1; visibility: visible; }
+    /* 展開後的狀態：淺灰色背景，增加層次 */
+    .card.active { 
+        max-height: 800px; 
+        background: #f8fafc; 
+        border-left-color: var(--name-color);
+    }
 
-/* 清單與粗體樣式保留 */
-.details ul { padding-left: 20px; margin-top: 10px; list-style-type: disc !important; }
-.details li { margin-bottom: 12px; line-height: 1.6; display: list-item; }
-.details strong { font-weight: bold; color: var(--name-color); display: inline-block; margin-right: 5px; }
+    .card h3 { color: var(--name-color); margin-top: 0; font-size: 1.4rem; }
+    .summary { font-size: 1rem; color: #64748b; margin-bottom: 0; }
+
+    /* 詳細內容清單與粗體設定 */
+    .details { 
+        padding-top: 20px; 
+        border-top: 1px solid rgba(0,0,0,0.1); 
+        margin-top: 15px; 
+        color: #475569;
+    }
+
+    .details ul {
+        padding-left: 20px;
+        margin-top: 10px;
+        list-style-type: disc !important; /* 強制顯示圓點 */
+    }
+
+    .details li {
+        margin-bottom: 12px;
+        line-height: 1.6;
+        display: list-item; /* 確保清單格式 */
+    }
+
+    .details strong {
+        font-weight: bold;
+        color: var(--name-color); /* 小標題用專屬藍 */
+        display: inline-block; /* 讓它跟文字在同一行或自成一行 */
+        margin-right: 5px;
+    }
 
 
 /* --- 專案成就：16:9 精確對齊與一秒一跳 --- */
