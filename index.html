@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Claire Chan | Professional Portfolio</title>
     <style>
+        /* --- 修正後的基礎定義 --- */
         :root {
-            --bg-color: #0f172a;
-            --text-color: #f1f5f9;
-            --accent-color: #38bdf8;
-            --name-color: #144586;
+            --bg-color: #D0EFED;      /* 你選的文青淡青色背景 */
+            --text-color: #2d3748;    /* 深灰色文字 */
+            --accent-color: #0891b2;  /* 亮點青色 */
+            --name-color: #144586;    /* 你的專屬藍色 */
             --about-label-color: #177DAF;
-            --card-bg: #1e293b;
-            --border-color: rgba(56, 189, 248, 0.2);
+            --card-bg: #ffffff;       /* 卡片背景改為白色，否則會跟背景色打架 */
+            --border-color: rgba(0, 0, 0, 0.1);
         }
 
         body {
@@ -24,6 +25,56 @@
             padding: 0;
             scroll-behavior: smooth;
         }
+
+        /* 修正卡片點擊後的文字顯色問題 */
+        .card { 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 8px; 
+            border-left: 4px solid var(--accent-color);
+            cursor: pointer; 
+            transition: 0.4s; 
+            max-height: 160px; 
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            color: #333; /* 確保未展開時文字也是深的 */
+        }
+        .card.active { 
+            max-height: 600px; 
+            background: #ffffff; 
+        }
+        .details { 
+            opacity: 0; 
+            transition: 0.3s; 
+            padding-top: 20px; 
+            border-top: 1px solid rgba(0,0,0,0.05); 
+            margin-top: 15px; 
+            color: #475569 !important; /* 強制展開後文字為深色，避免消失 */
+        }
+        .card.active .details { opacity: 1; }
+        /* --- 語言切換按鈕 --- */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            background: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .lang-switch a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        .lang-switch a:hover { color: var(--accent-color); }
+
+        section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+        h2 { font-size: 2.2rem; color: var(--accent-color); text-align: center; margin-bottom: 40px; }
+        .hint { text-align: center; font-size: 0.8rem; color: #64748b; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
 
         section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
         h2 { font-size: 2.2rem; color: var(--accent-color); text-align: center; margin-bottom: 60px; font-weight: 300; letter-spacing: 4px; }
@@ -55,40 +106,73 @@
         .about-label { color: var(--about-label-color); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; display: block; }
         .hero .about-text { max-width: 450px; font-size: 1.05rem; color: #475569; text-align: justify; border-left: 1px solid #dddddd; padding-left: 20px; }
 
-        /* --- 核心價值與專案樣式 --- */
+        /* --- 核心價值區 --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { 
-            background: var(--card-bg); padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color);
-            cursor: pointer; transition: 0.4s; max-height: 160px; overflow: hidden;
-        }
-        .card.active { max-height: 800px; border-left-color: #fff; background: #243147; }
+        /* 修改卡片色彩邏輯 */
+.card { 
+    background: #ffffff; /* 初始改為白色，符合文青風 */
+    padding: 30px; 
+    border-radius: 8px; 
+    border-left: 4px solid var(--accent-color);
+    cursor: pointer; 
+    transition: 0.4s; 
+    max-height: 160px; 
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    color: #333; /* 確保主文字是深色 */
+}
+
+.card.active { 
+    max-height: 600px; 
+    background: #f8fafc; /* 展開時變為極淺灰，增加層次感 */
+}
+
+.card h3 { color: var(--name-color); } /* 標題使用你的專屬藍色 */
+
+.details { 
+    opacity: 0; 
+    transition: 0.3s; 
+    padding-top: 20px; 
+    border-top: 1px solid rgba(0,0,0,0.1); 
+    margin-top: 15px; 
+    color: #475569 !important; /* 強制展開後的文字為深灰色，確保在白底看得見 */
+}
         
-        .project-container { display: flex; flex-direction: column; gap: 80px; }
-        .project-row { display: flex; align-items: center; gap: 40px; }
-        .project-row:nth-child(even) { flex-direction: row-reverse; }
+        /* 幻燈片跳轉效果 */
+.slideshow-track { 
+    display: flex; 
+    width: 100%; 
+    height: 100%; 
+}
 
-        /* 跑馬燈投影片 */
-        .slideshow-viewport {
-            flex: 1.2;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            border-radius: 8px;
-            position: relative;
-            background: #000;
-        }
-        .slideshow-track { display: flex; width: 100%; height: 100%; }
-        .slideshow-track img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
-        .slideshow-viewport:hover .slideshow-track { animation: slide linear infinite; }
+.slideshow-track img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    flex-shrink: 0; 
+}
 
-        @keyframes slide {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
+/* 只有在滑鼠滑入時執行動畫，使用 steps 達成一張一張切換感 */
+.slideshow-viewport:hover .slideshow-track { 
+    animation: slide-steps linear infinite; 
+}
 
-        .project-info { flex: 1; }
-        .project-info h3 { font-size: 1.8rem; color: var(--accent-color); margin-bottom: 15px; }
+/* 專案一有 10 張圖，設為 10 步 */
+.project-row:nth-child(1) .slideshow-track { animation-duration: 10s; } 
+/* 專案二有 6 張圖，設為 6 步 */
+.project-row:nth-child(2) .slideshow-track { animation-duration: 6s; } 
+/* 專案三有 5 張圖，設為 5 步 */
+.project-row:nth-child(3) .slideshow-track { animation-duration: 5s; }
 
+@keyframes slide-steps {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* 核心技巧：針對不同圖片數量的專案設定 steps */
+.project-row:nth-child(1):hover .slideshow-track { animation-timing-function: steps(10); }
+.project-row:nth-child(2):hover .slideshow-track { animation-timing-function: steps(6); }
+.project-row:nth-child(3):hover .slideshow-track { animation-timing-function: steps(5); }
         /* 影片嵌入 */
         .video-wrapper { max-width: 800px; margin: 40px auto; }
         .iframe-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
@@ -98,10 +182,30 @@
         .cta-main { display: inline-block; background: var(--name-color); color: #fff; padding: 15px 45px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: 0.3s; }
         .contact-links { margin-top: 40px; display: flex; justify-content: center; gap: 20px; color: #64748b; }
         footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; background: #f8fafc; }
+
+        /* --- Modal 彈窗 --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #fff; padding: 40px; border-radius: 15px; max-width: 600px; width: 100%; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #64748b; }
+
+        /* --- 聯繫區 --- */
+        .contact-section { text-align: center; padding: 120px 20px; background: rgba(255,255,255,0.3); }
+        .contact-links { margin-top: 40px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .social-link { color: var(--accent-color); text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .social-link:hover { text-decoration: underline; }
+        .cta-main { display: inline-block; background: var(--accent-color); color: #fff; padding: 15px 45px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-bottom: 30px; transition: 0.3s; }
+        .cta-main:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; }
     </style>
 </head>
 <body>
-
+    
+    <div class="lang-switch">
+        <a href="#" onclick="alert('目前已經是中文版囉！')">中文</a> | 
+        <a href="#" onclick="alert('English version feature is ready for your translation!')">EN</a>
+    </div>
+    
     <section class="hero">
         <div class="hero-left">
             <img src="self.jpg" alt="Claire Chan" class="profile-img-rect">
@@ -123,7 +227,7 @@
             <div class="card" onclick="toggleDetails(this)">
                 <h3>結構化專案控管</h3>
                 <p class="summary">精準掌控 20+ 專案全生命週期。</p>
-                <div class="details" style="color: #cbd5e1;">
+                <div class="details" >
                     <ul>
                         <li>策略性排程：具備完整專案規劃與全流程管理能力，能統籌多支影片之生命週期，依節慶與合作時程建立發布節奏，並透過前置產製提升內容供應彈性；同時擅長拆解任務、設定關鍵里程碑與進度控管，主動排除執行障礙，確保產出品質與準時交付</li>
                         <li>流程管理：具備拆解複雜任務與邏輯規劃能力，能主動排除執行障礙並優化資源配置，在多線並行的高壓環境中，以效率最大化為原則整合企劃、拍攝與製作流程，確保時程掌控與產出品質穩定，並透過快速整合回饋持續優化成果。</li>
@@ -159,10 +263,10 @@
             
             <div class="project-row">
                 <div class="slideshow-viewport">
-                    <div class="slideshow-track" style="animation-duration: 25s; width: 1000%;">
+                    <div class="slideshow-track" style="animation-duration: 25s; width: 1100%;">
                         <img src="hugrevolution.jpg"> <img src="group.jpg"> <img src="1.jpg"> 
                         <img src="2.jpg"> <img src="3.jpg"> <img src="4.jpg"> 
-                        <img src="5.JPG"> <img src="6.jpg"> <img src="7.png"> <img src="8.png">
+                        <img src="5.JPG"> <img src="6.jpg"> <img src="7.png"> <img src="8.png"> <img src="hugrevolution.jpg">
                     </div>
                 </div>
                 <div class="project-info">
@@ -174,9 +278,9 @@
 
             <div class="project-row">
                 <div class="slideshow-viewport">
-                    <div class="slideshow-track" style="animation-duration: 15s; width: 600%;">
+                    <div class="slideshow-track" style="animation-duration: 15s; width: 700%;">
                         <img src="paperbattery.png"> <img src="flint1.png"> <img src="flint2.png"> 
-                        <img src="flint3.png"> <img src="flint4.png"> <img src="flint5.png">
+                        <img src="flint3.png"> <img src="flint4.png"> <img src="flint5.png"> <img src="paperbattery.png">
                     </div>
                 </div>
                 <div class="project-info">
@@ -188,9 +292,9 @@
 
             <div class="project-row">
                 <div class="slideshow-viewport">
-                    <div class="slideshow-track" style="animation-duration: 12s; width: 500%;">
+                    <div class="slideshow-track" style="animation-duration: 12s; width: 600%;">
                         <img src="strategicentry.png"> <img src="japan1.jpg"> <img src="japan2.png"> 
-                        <img src="japan3.png"> <img src="japan4.png">
+                        <img src="japan3.png"> <img src="japan4.png"> <img src="strategicentry.png">
                     </div>
                 </div>
                 <div class="project-info">
@@ -207,12 +311,12 @@
         <h2 style="color: var(--accent-color);">30秒創作-Light</h2>
         <div class="video-wrapper">
             <div class="iframe-container">
-                <iframe src="https://youtu.be/23Ez3gEIaHk?si=WYJI7gsHypQJUrU7" frameborder="0" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/23Ez3gEIaHk?si=qRV_LcecM9AN4CF9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div style="margin-top: 30px; text-align: center;">
                 <img src="light.JPG" alt="Creation" style="width: 100%; border-radius: 8px; margin-bottom: 20px;">
                 <p style="color: #94a3b8; max-width: 800px; margin: 0 auto; line-height: 1.8;">
-                    以陽光為基礎發想,在校園內尋找溫暖、含有光影的元素。 過程比較即興, 因此在構圖上會依照當下感受和遇到的畫面做拍攝;在背景音樂上也是選擇聽起來相對輕鬆的,想給人步調緩慢放鬆的氛圍。
+                    以陽光為基礎發想，在校園內尋找溫暖、含有光影的元素。過程比較即興，因此在構圖上會依照當下感受和遇到的畫面做拍攝；在背景音樂上也是選擇聽起來相對輕鬆的，想給人步調緩慢放鬆的氛圍。
                 </p>
             </div>
         </div>
