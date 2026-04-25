@@ -3,180 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claire Chan | Portfolio</title>
+    <title>Claire Chan | Professional Portfolio</title>
     <style>
         :root {
-            --bg-color: #D0EFED; 
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --accent-color: #38bdf8;
             --name-color: #144586;
-            --about-color: #177DAF;
-            --highlight-color: #144586;
-            --white: #ffffff;
+            --about-label-color: #177DAF;
+            --card-bg: #1e293b;
+            --border-color: rgba(56, 189, 248, 0.2);
         }
 
         body {
-            font-family: 'Inter', "PingFang TC", "Microsoft JhengHei", sans-serif;
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
             background-color: var(--bg-color);
-            color: #2d3748;
+            color: var(--text-color);
             line-height: 1.8;
             margin: 0;
             padding: 0;
-            letter-spacing: 0.05em;
+            scroll-behavior: smooth;
         }
 
-        section { padding: 100px 8%; max-width: 1300px; margin: 0 auto; }
+        section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
+        h2 { font-size: 2.2rem; color: var(--accent-color); text-align: center; margin-bottom: 60px; font-weight: 300; letter-spacing: 4px; }
 
-        /* --- Hero Section (左大圖右敘述) --- */
-        .hero { display: flex; align-items: center; min-height: 95vh; gap: 80px; }
-        .profile-container { flex: 1.2; }
-        .profile-img {
-            width: 100%;
-            max-width: 500px;
-            height: 700px; /* 符合 2297x3445 的長方比例 */
+        /* --- 個人介紹 Hero Section (左圖右文文青風) --- */
+        .hero { 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: #ffffff; 
+            color: #333333;
+            padding: 0 5%;
+            gap: 60px;
+        }
+
+        .hero-left { flex: 1; display: flex; justify-content: flex-end; }
+        .hero-right { flex: 1; text-align: left; }
+
+        .profile-img-rect {
+            width: 350px;
+            height: 500px;
             object-fit: cover;
-            box-shadow: 30px 30px 0px var(--white);
+            box-shadow: 20px 20px 0px var(--name-color);
         }
-        .hero-content { flex: 1; }
-        .hero h1 { font-size: 4rem; color: var(--name-color); margin: 0; font-weight: 800; }
-        .hero .about-text { font-size: 1.15rem; color: var(--about-color); margin-top: 40px; }
 
-        /* --- 核心價值 (置中且重點突顯) --- */
-        .values-section h2 { text-align: center; color: var(--name-color); font-size: 2.2rem; margin-bottom: 60px; }
-        .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        .value-card { background: rgba(255,255,255,0.4); padding: 50px 30px; text-align: center; border-radius: 2px; }
-        .value-card h3 { color: var(--highlight-color); font-size: 1.5rem; margin-bottom: 20px; }
-        .value-card strong { color: var(--highlight-color); background: linear-gradient(transparent 70%, rgba(20, 69, 134, 0.1) 30%); }
+        .hero h1 { font-size: 3.5rem; margin: 0; color: var(--name-color); font-weight: 700; }
+        .hero .eng-name { font-size: 1.2rem; color: #64748b; letter-spacing: 3px; margin-bottom: 20px; }
+        .about-label { color: var(--about-label-color); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; display: block; }
+        .hero .about-text { max-width: 450px; font-size: 1.05rem; color: #475569; text-align: justify; border-left: 1px solid #dddddd; padding-left: 20px; }
 
-        /* --- 專案排版 (左跑馬燈右文字) --- */
-        .project-item {
-            display: flex;
-            background: var(--white);
-            margin-bottom: 100px;
-            align-items: center;
+        /* --- 核心價值與專案樣式 --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { 
+            background: var(--card-bg); padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color);
+            cursor: pointer; transition: 0.4s; max-height: 160px; overflow: hidden;
+        }
+        .card.active { max-height: 800px; border-left-color: #fff; background: #243147; }
+        
+        .project-container { display: flex; flex-direction: column; gap: 80px; }
+        .project-row { display: flex; align-items: center; gap: 40px; }
+        .project-row:nth-child(even) { flex-direction: row-reverse; }
+
+        /* 跑馬燈投影片 */
+        .slideshow-viewport {
+            flex: 1.2;
+            width: 100%;
+            aspect-ratio: 16 / 9;
             overflow: hidden;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            position: relative;
+            background: #000;
         }
-        .project-slider { flex: 1.4; height: 500px; overflow: hidden; position: relative; }
-        .slider-track { display: flex; height: 100%; transition: 0.5s; }
-        .slider-track img { height: 100%; object-fit: cover; flex-shrink: 0; width: 100%; }
+        .slideshow-track { display: flex; width: 100%; height: 100%; }
+        .slideshow-track img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
+        .slideshow-viewport:hover .slideshow-track { animation: slide linear infinite; }
 
-        /* 滑鼠懸停觸發跑馬燈 */
-        .slider-10:hover .slider-track { animation: marquee10 25s linear infinite; }
-        .slider-6:hover .slider-track { animation: marquee6 15s linear infinite; }
-        .slider-5:hover .slider-track { animation: marquee5 12s linear infinite; }
-
-        @keyframes marquee10 { 0% { transform: translateX(0); } 100% { transform: translateX(-900%); } }
-        @keyframes marquee6 { 0% { transform: translateX(0); } 100% { transform: translateX(-500%); } }
-        @keyframes marquee5 { 0% { transform: translateX(0); } 100% { transform: translateX(-400%); } }
-
-        .project-info { flex: 1; padding: 60px; }
-        .project-info h3 { color: var(--name-color); font-size: 1.8rem; margin-top: 0; }
-        .project-info p { font-size: 1.05rem; color: #555; margin-bottom: 30px; }
-
-        /* --- 影片作品 --- */
-        .video-section { text-align: center; background: rgba(255,255,255,0.2); }
-        .video-wrapper { max-width: 1000px; margin: 50px auto; aspect-ratio: 16 / 9; box-shadow: 0 40px 80px rgba(0,0,0,0.15); }
-        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
-        .video-img { width: 100%; max-width: 900px; height: auto; margin-bottom: 30px; border-radius: 4px; }
-
-        @media (max-width: 1024px) {
-            .hero, .project-item { flex-direction: column; text-align: center; }
-            .hero-content, .project-info { padding: 40px 20px; }
-            .profile-img { height: auto; max-width: 100%; }
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
+
+        .project-info { flex: 1; }
+        .project-info h3 { font-size: 1.8rem; color: var(--accent-color); margin-bottom: 15px; }
+
+        /* 影片嵌入 */
+        .video-wrapper { max-width: 800px; margin: 40px auto; }
+        .iframe-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
+        .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        .contact-section { text-align: center; padding: 120px 20px; background: #ffffff; color: #333; }
+        .cta-main { display: inline-block; background: var(--name-color); color: #fff; padding: 15px 45px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+        .contact-links { margin-top: 40px; display: flex; justify-content: center; gap: 20px; color: #64748b; }
+        footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; background: #f8fafc; }
     </style>
 </head>
 <body>
 
     <section class="hero">
-        <div class="profile-container">
-            <img src="self.jpg" alt="Claire Chan" class="profile-img">
+        <div class="hero-left">
+            <img src="self.jpg" alt="Claire Chan" class="profile-img-rect">
         </div>
-        <div class="hero-content">
+        <div class="hero-right">
+            <div class="eng-name">Claire Chan</div>
             <h1>詹妮臻</h1>
-            <div style="color: var(--name-color); font-weight: 300; letter-spacing: 3px; margin-top: 10px;">CLAIRE CHAN</div>
+            <p style="letter-spacing: 5px; color: #64748b; margin-bottom: 30px;">跨界邏輯 | 專案管理 | 國際貿易</p>
+            <span class="about-label">關於我</span>
             <p class="about-text">
-                淡江資傳與 ITI 貿協培訓背景，具備流暢的中英商務溝通與簡報實力。擅長將數位思維與商務邏輯結合，曾擔任華山創意園區大型畢業展覽影像總監。擁有將複雜的需求結構化的能力，為團隊創造兼具邏輯與視覺競爭力的商務價值。
+                淡江資傳與 ITI 貿協培訓背景，具備流暢的中英商務溝通與簡報實力。擅長將數位思維與商務邏輯結合，曾擔任畢業成果展畢業籌劃組影音總監，並具備展覽規劃、進度控管及跨團隊協作實務。擁有將複雜的需求結構化的能力，為團隊創造兼具邏輯與視覺競爭力的商務價值。
             </p>
         </div>
     </section>
 
-    <section class="values-section">
-        <h2>Core Values</h2>
-        <div class="values-grid">
-            <div class="value-card">
+<section id="values">
+        <h2 style="color: var(--accent-color);">核心價值</h2>
+        <div class="grid">
+            <div class="card" onclick="toggleDetails(this)">
                 <h3>結構化專案控管</h3>
-                <p>精準掌控 <strong>20+ 專案</strong>全生命週期，建立高效發布行事曆，確保高品質準時交付。</p>
+                <p class="summary">精準掌控 20+ 專案全生命週期。</p>
+                <div class="details" style="color: #cbd5e1;">
+                    <ul>
+                        <li>策略性排程：具備完整專案規劃與全流程管理能力，能統籌多支影片之生命週期，依節慶與合作時程建立發布節奏，並透過前置產製提升內容供應彈性；同時擅長拆解任務、設定關鍵里程碑與進度控管，主動排除執行障礙，確保產出品質與準時交付</li>
+                        <li>流程管理：具備拆解複雜任務與邏輯規劃能力，能主動排除執行障礙並優化資源配置，在多線並行的高壓環境中，以效率最大化為原則整合企劃、拍攝與製作流程，確保時程掌控與產出品質穩定，並透過快速整合回饋持續優化成果。</li>
+                    </ul>
+                </div>
             </div>
-            <div class="value-card">
+            <div class="card" onclick="toggleDetails(this)">
                 <h3>跨領域轉化與協調</h3>
-                <p>擅長將碎片資訊整合為<strong>具敘事邏輯的提案</strong>，精準轉化客戶需求並達成團隊共識。</p>
+                <p class="summary">整合碎片化資訊為邏輯提案。</p>
+                <div class="details" style="color: #cbd5e1;">
+                    <ul>
+                        <li>團隊溝通與領導：具備整合多元背景意見能力，能透過結構化引導設計帶領團隊進行批判性思考與深度討論，並善用延伸提問促進探討觀點與提升互動，增加共識與團隊整體決策品質表現。</li>
+                        <li>資源整合：擅長跨組別資訊與多元素材整合，能將碎片化內容轉化為具敘事邏輯的影像成果，並精準對齊整體風格與品牌需求，同步整合贊助商意見與製作，確保產出品質穩定並如期完成最終交付成果。</li>
+                    </ul>
+                </div>
             </div>
-            <div class="value-card">
-                <h3>邏輯驅動商務決策</h3>
-                <p>熟練運用結構化架構撰寫報告，並具備<strong>模擬會議主席</strong>經驗，引導團隊達成實質決策。</p>
+            <div class="card" onclick="toggleDetails(this)">
+                <h3>商業撰述與會議決策</h3>
+                <p class="summary">運用結構化架構撰寫專業報告。</p>
+                <div class="details" style="color: #cbd5e1;">
+                    <ul>
+                        <li>結構化撰述：熟練運用結構化報告框架，能將複雜需求轉化為清晰文件，明確定義背景與目標，透過邏輯分析與數據支撐提出具體執行建議，提升內容說服力並確保決策依據完整與一致性。</li>
+                        <li>會議引導：具備商務會議實務經驗，能有效搜集跨部門資訊並整合關鍵重點，透過引導式提問促進決策討論，並精準整理會議結論與代辦事項，明確分配後續行動與時程以確保執行。</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="projects">
-        <h2 style="color: var(--name-color); text-align: center; margin-bottom: 60px;">Featured Projects</h2>
-        
-        <div class="project-item">
-            <div class="project-slider slider-10">
-                <div class="slider-track">
-                    <img src="hugrevolution.jpg"><img src="group.jpg"><img src="1.jpg"><img src="2.jpg"><img src="3.jpg">
-                    <img src="4.jpg"><img src="5.JPG"><img src="6.jpg"><img src="7.png"><img src="8.png">
+        <h2 style="color: var(--accent-color);">專案成就</h2>
+        <div class="project-container">
+            
+            <div class="project-row">
+                <div class="slideshow-viewport">
+                    <div class="slideshow-track" style="animation-duration: 25s; width: 1000%;">
+                        <img src="hugrevolution.jpg"> <img src="group.jpg"> <img src="1.jpg"> 
+                        <img src="2.jpg"> <img src="3.jpg"> <img src="4.jpg"> 
+                        <img src="5.JPG"> <img src="6.jpg"> <img src="7.png"> <img src="8.png">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>抱抱革命 Hug Revolution</h3>
+                    <p>擔任影像總監，負責統籌20+支影片全流程製作，舉辦3場快閃活動與2場大型展覽，整合跨組別碎片化資訊與多元素材，完成具敘事結構之展覽開幕影片，並於華山文創園區成功展出，確保整體內容品質與現場呈現效果一致。</p>
+                    <a href="https://artogo.co/zh-TW/exhibition/hugrevolution/work/4f087341de4f" target="_blank" class="cta-main" style="padding: 10px 25px; font-size: 0.9rem;">參觀線上展覽</a>
                 </div>
             </div>
-            <div class="project-info">
-                <h3>抱抱革命 Hug Revolution</h3>
-                <p>擔任影像總監，整合跨組別碎片資訊，製作展覽開幕片，成功在華山文創園區展出。協調贊助商需求並轉化為具體視覺產出。</p>
-                <a href="https://artogo.co/zh-TW/exhibition/hugrevolution/work/4f087341de4f" target="_blank" style="color: var(--name-color); text-decoration: none; font-weight: bold;">EXPLORE CASE →</a>
-            </div>
-        </div>
 
-        <div class="project-item" style="flex-direction: row-reverse;">
-            <div class="project-slider slider-6">
-                <div class="slider-track">
-                    <img src="paperbattery.png"><img src="flint1.png"><img src="flint2.png">
-                    <img src="flint3.png"><img src="flint4.png"><img src="flint5.png">
+            <div class="project-row">
+                <div class="slideshow-viewport">
+                    <div class="slideshow-track" style="animation-duration: 15s; width: 600%;">
+                        <img src="paperbattery.png"> <img src="flint1.png"> <img src="flint2.png"> 
+                        <img src="flint3.png"> <img src="flint4.png"> <img src="flint5.png">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Flint紙電池 B2B商務簡報</h3>
+                    <p>在多項專案併行下，透過分工與時程控管完成資料蒐集與邏輯建構，並製作全英文簡報進行提案與問答應對；同時擔任模擬業務角色，將複雜技術規格轉化為視覺化內容，推動B2B市場行銷並展現商業價值與高抗壓表現。</p>
+                    <a href="https://canva.link/j6c1r16dtv9bnuz" target="_blank" class="cta-main" style="padding: 10px 25px; font-size: 0.9rem;">查看簡報</a>
                 </div>
             </div>
-            <div class="project-info">
-                <h3>全英文商務簡報競賽</h3>
-                <p>模擬 Flint 紙電池公司業務進行 B2B 市場行銷，於短時間收集資料並建構視覺化英語簡報，展現高抗壓性與臨場應對力。</p>
-            </div>
-        </div>
 
-        <div class="project-item">
-            <div class="project-slider slider-5">
-                <div class="slider-track">
-                    <img src="strategicentry.png"><img src="japan1.jpg">
-                    <img src="japan2.png"><img src="japan3.png"><img src="japan4.png">
+            <div class="project-row">
+                <div class="slideshow-viewport">
+                    <div class="slideshow-track" style="animation-duration: 12s; width: 500%;">
+                        <img src="strategicentry.png"> <img src="japan1.jpg"> <img src="japan2.png"> 
+                        <img src="japan3.png"> <img src="japan4.png">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>跨文化市場進入策略</h3>
+                    <p>以玉井芒果乾為案例，將其重新定位為高端水果甜點禮盒，調整包裝設計、內容物與多元定價策略，以符合日本商務送禮市場需求；同時運用AI模擬展示攤位，整合線上線下通路提案，提升展覽曝光與市場推廣效益。</p>
+                    <a href="https://canva.link/rgr2x0e691w362g" target="_blank" class="cta-main" style="padding: 10px 25px; font-size: 0.9rem;">查看策略提案</a>
                 </div>
             </div>
-            <div class="project-info">
-                <h3>跨文化市場進入策略</h3>
-                <p>透過調整包裝、內容物與定價策略，將玉井芒果乾成功推向日本市場。利用 AI 模擬展示攤位，幫助視覺化提案。</p>
-            </div>
+
         </div>
     </section>
 
-    <section class="video-section">
-        <h2 style="color: var(--name-color);">Video Creation</h2>
-        <img src="light.JPG" class="video-img" alt="Creative Work">
-        
+    <section class="video-section" style="background: #111b2d;">
+        <h2 style="color: var(--accent-color);">30秒創作-Light</h2>
         <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/PLeprbZIfYKAKkfQjo4vyUtk1rPA7oEvSZ" allowfullscreen></iframe>
+            <div class="iframe-container">
+                <iframe src="https://youtu.be/23Ez3gEIaHk?si=WYJI7gsHypQJUrU7" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div style="margin-top: 30px; text-align: center;">
+                <img src="light.JPG" alt="Creation" style="width: 100%; border-radius: 8px; margin-bottom: 20px;">
+                <p style="color: #94a3b8; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+                    以陽光為基礎發想,在校園內尋找溫暖、含有光影的元素。 過程比較即興, 因此在構圖上會依照當下感受和遇到的畫面做拍攝;在背景音樂上也是選擇聽起來相對輕鬆的,想給人步調緩慢放鬆的氛圍。
+                </p>
+            </div>
         </div>
-        <p style="color: var(--about-color); max-width: 800px; margin: 0 auto;">
-            結合資傳背景與數位邏輯，這部影片展示了如何將繁複的專案過程轉化為具感染力的影像敘事。從腳本構思到最終剪輯，均強調視覺美感與商業訊息的精準傳遞。
+    </section>
+    
+    <section id="contact" class="contact-section">
+        <h2 style="color: var(--name-color);">聯繫我</h2>
+        <p style="max-width: 700px; margin: 0 auto 30px;">
+            感謝您的閱覽。如果您對我的背景或過往專案有興趣，並且正在尋找具備邏輯思維與執行力的夥伴，歡迎隨時聯繫。
         </p>
+        <a href="mailto:nijenchan02@gmail.com" class="cta-main">發送郵件聯繫</a>
+        
+        <div class="contact-links">
+            <a href="https://youtube.com/playlist?list=PLeprbZIfYKAKkfQjo4vyUtk1rPA7oEvSZ&si=ctk0TCMZ-7wQkjvE" target="_blank" class="social-link">YouTube 作品集</a>
+            <a href="https://www.linkedin.com/in/ni-jen-chan" target="_blank" class="social-link">LinkedIn</a>
+            <a href="resume.pdf" target="_blank" class="social-link">檢視英文履歷</a>
+            <a href="chresume.pdf" target="_blank" class="social-link">檢視中文履歷</a>
+        </div>
     </section>
 
-    <footer style="padding: 80px 0; text-align: center; color: #94a3b8; font-size: 0.9rem;">
-        &copy; 2026 Claire Chan. All Rights Reserved.
-    </footer>
+    <footer>&copy; 2026 Claire Chan. All Rights Reserved.</footer>
 
+    <script>
+        function toggleDetails(card) { card.classList.toggle('active'); }
+    </script>
 </body>
 </html>
