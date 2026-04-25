@@ -86,61 +86,82 @@
         margin-right: 5px;
     }
 
-    /* --- 專案成就：解決巨大化與切碎感 --- */
-    .project-container { display: flex; flex-direction: column; gap: 80px; }
-    .project-row { display: flex; align-items: center; gap: 40px; }
+   <style>
+    /* 基礎排版保持... (:root, body, hero 等不變) */
+
+    /* --- 專案成就佈局 (修正為 16:9 與速度) --- */
+    .project-container { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 80px; 
+    }
+
+    .project-row { 
+        display: flex; 
+        align-items: center; 
+        gap: 40px; 
+    }
+
     .project-row:nth-child(even) { flex-direction: row-reverse; }
 
+    /* 幻燈片視窗：鎖定大小 (16:9) */
     .slideshow-viewport { 
-        width: 500px;        
-        height: 281px;       
+        width: 500px;        /* 視窗寬度 500px */
+        height: 281px;       /* 高度鎖定在 281px (此為 16:9 比例) */
         overflow: hidden;    /* 關鍵：隱藏其餘照片 */
         border-radius: 12px;
         flex-shrink: 0;      
         background: #eee;
-        position: relative;
     }
-       
+
     .slideshow-track { 
         display: flex; 
         height: 100%;
-        transition: transform 0.5s ease; /* 增加一點平滑感 */
+        /* 寬度 width: 1100% / 700% / 600% 在 HTML 內聯樣式寫即可 */
     }
 
     .slideshow-track img { 
-        width: 500px;        /* 必須跟 Viewport 一樣寬 */
+        width: 500px;        /* 圖片必須跟 Viewport 一樣寬，確保顯示完整 */
         height: 281px; 
-        object-fit: cover;   
+        object-fit: cover;   /* 裁切圖片以填滿視窗 */
         flex-shrink: 0;
     }
-      
 
-    /* 只有滑鼠移入時才動，且使用 steps 達成「翻頁感」 */
+    /* 滑鼠滑入時觸發「一張一張跳轉」的動畫 */
     .slideshow-viewport:hover .slideshow-track { 
         animation: slide-steps linear infinite; 
     }
 
+    /* 定義動畫：從第 1 張移動到最後 1 張 (100% 總寬) */
     @keyframes slide-steps {
         0% { transform: translateX(0); }
         100% { transform: translateX(-100%); }
     }
 
-    /* 根據每組專案的照片張數（含重複的那張）設定 steps */
-    /* 專案一：11張圖 */
+    /* --- 核心速度計算：一秒跳一張 --- */
+    
+    /* [專案一]: 11張圖 (10+1重複) 
+       需要跳 10 步 (steps(10))，每步 1 秒 = 總時長 10 秒 */
     .project-row:nth-child(1):hover .slideshow-track { 
         animation-timing-function: steps(10); 
-        animation-duration: 15s; 
+        animation-duration: 10s; 
     }
-    /* 專案二：7張圖 */
+
+    /* [專案二]: 7張圖 (6+1重複) 
+       需要跳 6 步 (steps(6))，每步 1 秒 = 總時長 6 秒 */
     .project-row:nth-child(2):hover .slideshow-track { 
         animation-timing-function: steps(6); 
-        animation-duration: 9s; 
+        animation-duration: 6s; 
     }
-    /* 專案三：6張圖 */
+
+    /* [專案三]: 6張圖 (5+1重複) 
+       需要跳 5 步 (steps(5))，每步 1 秒 = 總時長 5 秒 */
     .project-row:nth-child(3):hover .slideshow-track { 
         animation-timing-function: steps(5); 
-        animation-duration: 7.5s; 
+        animation-duration: 5s; 
     }
+
+    /* 其餘置中排版維持不變 (Contact, video) ... */
 
     /* 基礎排版其餘部分保持不變... */
     section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
@@ -175,15 +196,77 @@
         color: #cbd5e1;
         line-height: 1.8;
     }
-</style>
+/* --- 語言切換按鈕美化 --- */
+.lang-switch {
+    position: fixed;    /* 固定在視窗上 */
+    top: 25px;          /* 距離頂部 */
+    right: 25px;        /* 距離右邊 */
+    z-index: 2000;      /* 確保在所有元素最上層 */
+    background: rgba(255, 255, 255, 0.9); /* 半透明白底，更有高級感 */
+    backdrop-filter: blur(5px);           /* 背景模糊效果 */
+    padding: 6px 18px;
+    border-radius: 25px; /* 膠囊圓角 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 輕微陰影 */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.lang-switch:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px); /* 輕微上浮 */
+}
+
+.lang-switch a {
+    text-decoration: none;
+    color: #64748b; /* 灰藍色，較文青 */
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+    padding: 2px 0;
+}
+
+.lang-switch a:hover {
+    color: var(--accent-color); /* 移上去變青色 */
+}
+
+/* 分隔線美化 */
+.lang-divider {
+    width: 1px;
+    height: 12px;
+    background: #e2e8f0;
+}
+
+/* 當前語言的特別標註 (可選) */
+.lang-active {
+    color: var(--name-color) !important;
+}
+     /* --- Modal 彈窗 --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #fff; padding: 40px; border-radius: 15px; max-width: 600px; width: 100%; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #64748b; }
+
+        /* --- 聯繫區 --- */
+        .contact-section { text-align: center; padding: 120px 20px; background: rgba(255,255,255,0.3); }
+        .contact-links { margin-top: 40px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .social-link { color: var(--accent-color); text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .social-link:hover { text-decoration: underline; }
+        .cta-main { display: inline-block; background: var(--accent-color); color: #fff; padding: 15px 45px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-bottom: 30px; transition: 0.3s; }
+        .cta-main:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; }
+    </style>
 </head>
 <body>
     
     <div class="lang-switch">
-        <a href="#" onclick="alert('目前已經是中文版囉！')">中文</a> | 
-        <a href="#" onclick="alert('English version feature is ready for your translation!')">EN</a>
-    </div>
-    
+    <a href="#" class="lang-active" onclick="alert('目前已經是中文版囉！')">中文</a>
+    <div class="lang-divider"></div>
+    <a href="#" onclick="alert('English version feature is ready for your translation!')">EN</a>
+</div>
     <section class="hero">
         <div class="hero-left">
             <img src="self.jpg" alt="Claire Chan" class="profile-img-rect">
