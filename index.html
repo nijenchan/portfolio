@@ -33,7 +33,7 @@
     }
     .hero h1 { font-size: 3.5rem; color: var(--name-color); font-weight: 700; margin: 0; }
     /* --- 核心價值卡片統整版 --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
     .card { 
         background: #ffffff; padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color); cursor: pointer; 
         transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); max-height: 135px; overflow: hidden;
@@ -48,8 +48,6 @@
     .details li { margin-bottom: 12px; line-height: 1.6; display: list-item; }
     .details strong { font-weight: bold; color: var(--name-color); display: inline-block; margin-right: 5px; }
 
-
-    /* --- 專案成就佈局 (修正為 16:9 與速度) --- */
     /* --- 專案成就：16:9 精確對齊與一秒一跳 --- */
      .project-container { 
         display: flex; 
@@ -71,10 +69,6 @@
     .slideshow-track { display: flex; height: 100%; }
     .slideshow-track img { width: 500px; height: 281px; object-fit: cover; flex-shrink: 0; }
 
-     /* 滑鼠滑入時觸發「一張一張跳轉」的動畫 */
-    .slideshow-viewport:hover .slideshow-track { 
-        animation: slide-steps linear infinite; 
-    }
 
     /* 精確位移計算法：-(總張數-1)/總張數 */
     @keyframes slide-p1 { 0% { transform: translateX(0); } 100% { transform: translateX(-90.909%); } }
@@ -314,8 +308,5 @@
 
     <footer>&copy; 2026 Claire Chan. All Rights Reserved.</footer>
 
-    <script>
-        function toggleDetails(card) { card.classList.toggle('active'); }
-    </script>
 </body>
 </html>
