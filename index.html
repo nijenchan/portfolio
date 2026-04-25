@@ -22,80 +22,41 @@
         margin: 0;
         scroll-behavior: smooth;
     }
-
+/* --- 標題字體加大修正 --- */
+    #contact h2, .video-section h2, #projects h2, #values h2 { 
+        font-size: 2.8rem !important; font-weight: 700 !important;
+        letter-spacing: 3px; margin-bottom: 40px; text-align: center;
+    }
+    .hero .eng-name { 
+        font-size: 1.8rem !important; color: #64748b; letter-spacing: 5px; 
+        margin-bottom: 15px; font-weight: 600; 
+    }
+    .hero h1 { font-size: 3.5rem; color: var(--name-color); font-weight: 700; margin: 0; }
     /* --- 核心價值卡片統整版 --- */
-    .grid { 
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-        gap: 20px; 
-    }
-
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
     .card { 
-        background: #ffffff; 
-        padding: 30px; 
-        border-radius: 8px; 
-        border-left: 4px solid var(--accent-color);
-        cursor: pointer; 
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-        max-height: 125px; 
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        position: relative;
+        background: #ffffff; padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color); cursor: pointer; 
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); max-height: 135px; overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);position: relative;
     }
-
-    .card:hover { 
-        max-height: 800px; /* 滑入時展開 */
-        background: #f8fafc;
-        transform: translateY(-5px);
-    }
-
-    /* 展開後的狀態：淺灰色背景，增加層次 */
-    .card.active { 
-        max-height: 800px; 
-        background: #f8fafc; 
-        border-left-color: var(--name-color);
-    }
-
+    .card:hover { max-height: 800px; background: #f8fafc; transform: translateY(-5px); }
+    .details { padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 15px; color: #475569; }
+    .details ul { padding-left: 20px; margin-top: 10px; list-style-type: disc !important; }
+    .card.active { max-height: 800px; background: #f8fafc; border-left-color: var(--name-color); }
     .card h3 { color: var(--name-color); margin-top: 0; font-size: 1.3rem; margin-bottom: 10px; }
     .summary { font-size: 1rem; color: #64748b; margin-bottom: 1.5; }
-        
-    /* 詳細內容清單與粗體設定 */
-    .details { 
-        padding-top: 20px; 
-        border-top: 1px solid rgba(0,0,0,0.1); 
-        margin-top: 15px; 
-        color: #475569;
-    }
+    .details li { margin-bottom: 12px; line-height: 1.6; display: list-item; }
+    .details strong { font-weight: bold; color: var(--name-color); display: inline-block; margin-right: 5px; }
 
-    .details ul {
-        padding-left: 20px;
-        margin-top: 10px;
-        list-style-type: disc !important; /* 強制顯示圓點 */
-    }
-
-    .details li {
-        margin-bottom: 12px;
-        line-height: 1.6;
-        display: list-item; /* 確保清單格式 */
-    }
-
-    .details strong {
-        font-weight: bold;
-        color: var(--name-color); /* 小標題用專屬藍 */
-        display: inline-block; /* 讓它跟文字在同一行或自成一行 */
-        margin-right: 5px;
-    }
-
-   <style>
-    /* 基礎排版保持... (:root, body, hero 等不變) */
 
     /* --- 專案成就佈局 (修正為 16:9 與速度) --- */
-    .project-container { 
+    /* --- 專案成就：16:9 精確對齊與一秒一跳 --- */
+     .project-container { 
         display: flex; 
         flex-direction: column; 
         gap: 80px; 
     }
-
+        
     .project-row { 
         display: flex; 
         align-items: center; 
@@ -103,65 +64,27 @@
     }
 
     .project-row:nth-child(even) { flex-direction: row-reverse; }
-
-    /* 幻燈片視窗：鎖定大小 (16:9) */
+        
     .slideshow-viewport { 
-        width: 500px;        /* 視窗寬度 500px */
-        height: 281px;       /* 高度鎖定在 281px (此為 16:9 比例) */
-        overflow: hidden;    /* 關鍵：隱藏其餘照片 */
-        border-radius: 12px;
-        flex-shrink: 0;      
-        background: #eee;
-    }
+        width: 500px; height: 281px; overflow: hidden; border-radius: 12px; 
+        flex-shrink: 0; background: #eee; }
+    .slideshow-track { display: flex; height: 100%; }
+    .slideshow-track img { width: 500px; height: 281px; object-fit: cover; flex-shrink: 0; }
 
-    .slideshow-track { 
-        display: flex; 
-        height: 100%;
-        /* 寬度 width: 1100% / 700% / 600% 在 HTML 內聯樣式寫即可 */
-    }
-
-    .slideshow-track img { 
-        width: 500px;        /* 圖片必須跟 Viewport 一樣寬，確保顯示完整 */
-        height: 281px; 
-        object-fit: cover;   /* 裁切圖片以填滿視窗 */
-        flex-shrink: 0;
-    }
-
-    /* 滑鼠滑入時觸發「一張一張跳轉」的動畫 */
+     /* 滑鼠滑入時觸發「一張一張跳轉」的動畫 */
     .slideshow-viewport:hover .slideshow-track { 
         animation: slide-steps linear infinite; 
     }
 
-    /* 定義動畫：從第 1 張移動到最後 1 張 (100% 總寬) */
-    @keyframes slide-steps {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-100%); }
-    }
+    /* 精確位移計算法：-(總張數-1)/總張數 */
+    @keyframes slide-p1 { 0% { transform: translateX(0); } 100% { transform: translateX(-90.909%); } }
+    @keyframes slide-p2 { 0% { transform: translateX(0); } 100% { transform: translateX(-85.714%); } }
+    @keyframes slide-p3 { 0% { transform: translateX(0); } 100% { transform: translateX(-83.333%); } }
 
-    /* --- 核心速度計算：一秒跳一張 --- */
-    
-    /* [專案一]: 11張圖 (10+1重複) 
-       需要跳 10 步 (steps(10))，每步 1 秒 = 總時長 10 秒 */
-    .project-row:nth-child(1):hover .slideshow-track { 
-        animation-timing-function: steps(10); 
-        animation-duration: 10s; 
-    }
+    .project-row:nth-child(1):hover .slideshow-track { animation: slide-p1 10s steps(10) infinite !important; }
+    .project-row:nth-child(2):hover .slideshow-track { animation: slide-p2 6s steps(6) infinite !important; }
+    .project-row:nth-child(3):hover .slideshow-track { animation: slide-p3 5s steps(5) infinite !important; }
 
-    /* [專案二]: 7張圖 (6+1重複) 
-       需要跳 6 步 (steps(6))，每步 1 秒 = 總時長 6 秒 */
-    .project-row:nth-child(2):hover .slideshow-track { 
-        animation-timing-function: steps(6); 
-        animation-duration: 6s; 
-    }
-
-    /* [專案三]: 6張圖 (5+1重複) 
-       需要跳 5 步 (steps(5))，每步 1 秒 = 總時長 5 秒 */
-    .project-row:nth-child(3):hover .slideshow-track { 
-        animation-timing-function: steps(5); 
-        animation-duration: 5s; 
-    }
-
-    /* 其餘置中排版維持不變 (Contact, video) ... */
 
     /* 基礎排版其餘部分保持不變... */
     section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
@@ -196,23 +119,14 @@
         color: #cbd5e1;
         line-height: 1.8;
     }
-/* --- 語言切換按鈕美化 --- */
-.lang-switch {
-    position: fixed;    /* 固定在視窗上 */
-    top: 25px;          /* 距離頂部 */
-    right: 25px;        /* 距離右邊 */
-    z-index: 2000;      /* 確保在所有元素最上層 */
-    background: rgba(255, 255, 255, 0.9); /* 半透明白底，更有高級感 */
-    backdrop-filter: blur(5px);           /* 背景模糊效果 */
-    padding: 6px 18px;
-    border-radius: 25px; /* 膠囊圓角 */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 輕微陰影 */
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.3s ease;
-}
+        /* --- 語言切換：右上角精美膠囊 --- */
+    .lang-switch {
+        position: fixed; top: 25px; right: 25px; z-index: 2000;
+        background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px);
+        padding: 8px 20px; border-radius: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px;
+        border: 1px solid rgba(255,255,255,0.5); transition: 0.3s;
+    }
 
 .lang-switch:hover {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
