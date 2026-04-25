@@ -6,11 +6,12 @@
     <title>Claire Chan | Professional Portfolio</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --text-color: #f1f5f9;
-            --accent-color: #38bdf8;
-            --card-bg: #1e293b;
-            --border-color: rgba(56, 189, 248, 0.2);
+            /* 根據你提供的 #D0EFED 調整色調 */
+            --bg-color: #D0EFED; 
+            --text-color: #2d3748; /* 深色文字確保在淡色背景下的閱讀性 */
+            --accent-color: #0891b2; /* 較深的藍色作為強調色 */
+            --card-bg: #ffffff; /* 卡片改為白色增加層次感 */
+            --border-color: rgba(0, 0, 0, 0.1);
         }
 
         body {
@@ -22,6 +23,26 @@
             padding: 0;
             scroll-behavior: smooth;
         }
+
+        /* --- 語言切換按鈕 --- */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            background: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .lang-switch a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        .lang-switch a:hover { color: var(--accent-color); }
 
         section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
         h2 { font-size: 2.2rem; color: var(--accent-color); text-align: center; margin-bottom: 40px; }
@@ -35,7 +56,6 @@
             justify-content: center; 
             align-items: center; 
             text-align: center;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             padding-top: 60px;
         }
 
@@ -45,34 +65,35 @@
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            border: 4px solid var(--accent-color);
+            border: 4px solid #fff;
             object-fit: cover;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        .hero h1 { font-size: 3rem; margin: 10px 0; color: #fff; }
+        .hero h1 { font-size: 3rem; margin: 10px 0; color: var(--text-color); }
         .hero .eng-name { font-size: 1.5rem; color: var(--accent-color); font-weight: 300; margin-bottom: 10px; }
-        .hero .title { font-size: 1.2rem; letter-spacing: 2px; color: #94a3b8; margin-bottom: 25px; }
-        .hero .about-text { max-width: 700px; font-size: 1.05rem; color: #cbd5e1; line-height: 1.8; margin-bottom: 30px; }
+        .hero .title { font-size: 1.2rem; letter-spacing: 2px; color: #64748b; margin-bottom: 25px; }
+        .hero .about-text { max-width: 700px; font-size: 1.05rem; line-height: 1.8; margin-bottom: 30px; }
 
         /* --- 核心價值區 --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .card { 
             background: var(--card-bg); padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color);
             cursor: pointer; transition: 0.4s; max-height: 160px; overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-        .card.active { max-height: 600px; border-left-color: #fff; background: #243147; }
-        .card h3 { margin-top: 0; font-size: 1.3rem; color: #fff; }
-        .details { opacity: 0; transition: 0.3s; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; }
+        .card.active { max-height: 600px; background: #fff; }
+        .card h3 { margin-top: 0; font-size: 1.3rem; color: var(--text-color); }
+        .details { opacity: 0; transition: 0.3s; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 15px; }
         .card.active .details { opacity: 1; }
-        .card .summary { color: #94a3b8; }
+        .card .summary { color: #64748b; }
 
         /* --- 專案成就區 --- */
         .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        .project-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 16/9; cursor: pointer; }
+        .project-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 16/9; cursor: pointer; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .project-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .project-overlay {
-            position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
+            position: absolute; inset: 0; background: rgba(208, 239, 237, 0.95);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             opacity: 0; transition: 0.4s; padding: 25px; text-align: center;
         }
@@ -81,22 +102,27 @@
         .btn-more { margin-top: 15px; padding: 8px 22px; border: 1px solid var(--accent-color); color: var(--accent-color); text-decoration: none; border-radius: 20px; font-size: 0.9rem; }
 
         /* --- Modal 彈窗 --- */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-        .modal-content { background: var(--card-bg); padding: 40px; border-radius: 15px; max-width: 600px; width: 100%; position: relative; border: 1px solid var(--border-color); }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #fff; padding: 40px; border-radius: 15px; max-width: 600px; width: 100%; position: relative; }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #64748b; }
 
         /* --- 聯繫區 --- */
-        .contact-section { text-align: center; padding: 120px 20px; background: #162032; }
+        .contact-section { text-align: center; padding: 120px 20px; background: rgba(255,255,255,0.3); }
         .contact-links { margin-top: 40px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
         .social-link { color: var(--accent-color); text-decoration: none; font-weight: 600; transition: 0.3s; }
-        .social-link:hover { color: #fff; }
-        .cta-main { display: inline-block; background: var(--accent-color); color: var(--bg-color); padding: 15px 45px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-bottom: 30px; transition: 0.3s; }
-        .cta-main:hover { background: #fff; transform: translateY(-3px); }
+        .social-link:hover { text-decoration: underline; }
+        .cta-main { display: inline-block; background: var(--accent-color); color: #fff; padding: 15px 45px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-bottom: 30px; transition: 0.3s; }
+        .cta-main:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; border-top: 1px solid rgba(255,255,255,0.05); }
+        footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; }
     </style>
 </head>
 <body>
+
+    <div class="lang-switch">
+        <a href="#" onclick="alert('目前已經是中文版囉！')">中文</a> | 
+        <a href="#" onclick="alert('English version feature is ready for your translation!')">EN</a>
+    </div>
 
     <section class="hero">
         <div class="profile-container">
@@ -108,12 +134,12 @@
         <p class="about-text">
             淡江資傳與 ITI 貿協培訓背景，具備流暢的中英商務溝通與簡報實力。擅長將數位思維與商務邏輯結合，曾擔任華山創意園區大型畢業展覽影像總監，並具備展覽規劃、進度控管及跨團隊協作實務。擁有將複雜的需求結構化的能力，為團隊創造兼具邏輯與視覺競爭力的商務價值。
         </p>
-        <a href="#contact" class="btn-more" style="border-radius: 4px; padding: 12px 30px;">與我聯繫</a>
+        <a href="#contact" class="btn-more" style="border-radius: 4px; padding: 12px 30px; background: #fff;">與我聯繫</a>
     </section>
 
     <section id="values">
         <h2>核心價值</h2>
-        <div class="hint">點擊卡片以展開詳細經歷</div>
+        <div class="hint">CLICK CARDS TO EXPAND</div>
         <div class="grid">
             <div class="card" onclick="toggleDetails(this)">
                 <h3>結構化專案控管</h3>
@@ -152,25 +178,25 @@
         <h2>專案成就</h2>
         <div class="project-grid">
             <div class="project-item" onclick="openModal('proj1')">
-                <img src="https://images.unsplash.com/photo-1492691523567-30730029dffc?auto=format&fit=crop&w=800&q=80" alt="抱抱革命 Hug Revolution" class="project-img">
+                <img src="hugrevolution.jpg" alt="抱抱革命 Hug Revolution" class="project-img">
                 <div class="project-overlay">
-                    <h3>專案成就與執行績效</h3>
+                    <h3>抱抱革命 Hug Revolution</h3>
                     <p>影像總監與跨組別協作</p>
                     <span class="btn-more">了解更多</span>
                 </div>
             </div>
             <div class="project-item" onclick="openModal('proj2')">
-                <img src="https://images.unsplash.com/photo-1512314889357-e157c22f938d?auto=format&fit=crop&w=800&q=80" alt="全英文商務簡報競賽" class="project-img">
+                <img src="paperbattery.png" alt="全英文商務簡報競賽" class="project-img">
                 <div class="project-overlay">
-                    <h3>Flint紙電池</h3>
+                    <h3>Flint 紙電池簡報</h3>
                     <p>高壓敏捷執行</p>
                     <span class="btn-more">了解更多</span>
                 </div>
             </div>
             <div class="project-item" onclick="openModal('proj3')">
-                <img src="https://images.unsplash.com/photo-1492691523567-30730029dffc?auto=format&fit=crop&w=800&q=80" alt="跨文化市場進入策略" class="project-img">
+                <img src="strategicentry.png" alt="跨文化市場進入策略" class="project-img">
                 <div class="project-overlay">
-                    <h3>跨文化市場定位與產品在地化</h3>
+                    <h3>跨文化市場進入策略</h3>
                     <p>整合行銷與攤位規劃</p>
                     <span class="btn-more">了解更多</span>
                 </div>
@@ -181,14 +207,14 @@
     <section id="contact" class="contact-section">
         <h2>聯繫我</h2>
         <p style="max-width: 700px; margin: 0 auto 30px;">
-            感謝您的閱覽。如果您對我的背景或過往專案有興趣，並且正在尋找具備邏輯思維與執行力的夥伴，歡迎隨時聯繫。
+            感謝您的閱覽。如果您正在尋找具備邏輯思維與執行力的夥伴，歡迎隨時聯繫。
         </p>
         <a href="mailto:nijenchan02@gmail.com" class="cta-main">發送郵件聯繫</a>
         
         <div class="contact-links">
-            <a href="https://youtube.com/playlist?list=PLeprbZIfYKAKkfQjo4vyUtk1rPA7oEvSZ&si=ctk0TCMZ-7wQkjvE" target="_blank" class="social-link">YouTube 作品集</a>
+            <a href="https://youtube.com/playlist?list=PLeprbZIfYKAKkfQjo4vyUtk1rPA7oEvSZ" target="_blank" class="social-link">YouTube</a>
             <a href="https://www.linkedin.com/in/ni-jen-chan" target="_blank" class="social-link">LinkedIn</a>
-            <a href="english resume .pdf" target="_blank" class="social-link">檢視完整履歷 (Resume)</a>
+            <a href="English_Resume.pdf" target="_blank" class="social-link">檢視完整履歷</a>
         </div>
     </section>
 
@@ -204,11 +230,12 @@
     <script>
         function toggleDetails(card) { card.classList.toggle('active'); }
 
+        // [中文標記] 以下為彈窗內容，如需英文版也需翻譯此處
         const projectData = {
             proj1: {
-                title: "抱抱革命 Hug Revolutio",
+                title: "抱抱革命 Hug Revolution",
                 desc: "擔任影像總監，整合跨組別碎片資訊，製作展覽開幕片，成功在華山文創園區展出。協調贊助商需求並轉化為具體視覺產出，確保展覽調性一致。",
-                link: "hhttps://artogo.co/zh-TW/exhibition/hugrevolution/work/4f087341de4f"
+                link: "https://artogo.co/zh-TW/exhibition/hugrevolution/work/4f087341de4f"
             },
             proj2: {
                 title: "全英文商務簡報競賽",
@@ -217,7 +244,7 @@
             },
             proj3: {
                 title: "跨文化市場進入策略",
-                desc: "透過調整包裝、內容物與定價策略，將玉井芒果乾進入日本市場。利用 AI 模擬展示攤位，幫助視覺化提案",
+                desc: "透過調整包裝、內容物與定價策略，將玉井芒果乾進入日本市場。利用 AI 模擬展示攤位，幫助視覺化提案。",
                 link: "https://canva.link/rgr2x0e691w362g"
             }
         };
@@ -227,7 +254,7 @@
             const modalBody = document.getElementById('modal-body');
             modalBody.innerHTML = `
                 <h2 style="text-align:left; margin-bottom:15px; font-size:1.5rem;">${data.title}</h2>
-                <p style="color:#cbd5e1; margin-bottom:25px;">${data.desc}</p>
+                <p style="color:#64748b; margin-bottom:25px;">${data.desc}</p>
                 <a href="${data.link}" target="_blank" class="cta-main" style="padding:10px 25px;">查看相關連結</a>
             `;
             document.getElementById('projectModal').style.display = 'flex';
