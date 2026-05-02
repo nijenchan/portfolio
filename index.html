@@ -39,14 +39,35 @@
         transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); max-height: 135px; overflow: hidden;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);position: relative;
     }
-    .card:hover { max-height: 800px; background: #f8fafc; transform: translateY(-5px); }
     .details { padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 15px; color: #475569; }
     .details ul { padding-left: 20px; margin-top: 10px; list-style-type: disc !important; }
-    .card.active { max-height: 800px; background: #f8fafc; border-left-color: var(--name-color); }
     .card h3 { color: var(--name-color); margin-top: 0; font-size: 1.3rem; margin-bottom: 10px; }
     .summary { font-size: 1rem; color: #64748b; margin-bottom: 1.5; }
     .details li { margin-bottom: 12px; line-height: 1.6; display: list-item; }
     .details strong { font-weight: bold; color: var(--name-color); display: inline-block; margin-right: 5px; }
+ /* 游標移上去的回饋：等比稍微放大，但不展開內容 */
+.card:hover { 
+    transform: scale(1.03); 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    background: #f8fafc;
+}
+
+/* 當點擊後，JavaScript 會幫卡片加上 .is-expanded 這個類別 */
+.card.is-expanded { 
+    max-height: 1000px; /* 展開高度 */
+    border-left-color: var(--name-color);
+    transform: scale(1); /* 展開後恢復原大小，避免視覺太突兀 */
+}
+
+/* 讓細節內容預設透明，展開後才顯現（這樣動畫比較順） */
+.details { 
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
+}
+
+.card.is-expanded .details { 
+    opacity: 1; 
+}
 
 /* --- 專案成就：16:9 精確對齊與一秒一跳 --- */
   .project-container { display: flex; flex-direction: column; gap: 80px; }
@@ -299,6 +320,25 @@
     </section>
 
     <footer>&copy; 2026 Claire Chan. All Rights Reserved.</footer>
+    <script>
+    // 取得所有卡片
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            // 切換 .is-expanded 類別：點一下加上去，再點一下移除
+            card.classList.toggle('is-expanded');
+            
+            // (選配) 如果你希望點開一張時，自動收起其他的，可以改用下面這段：
+            /*
+            cards.forEach(otherCard => {
+                if (otherCard !== card) otherCard.classList.remove('is-expanded');
+            });
+            card.classList.toggle('is-expanded');
+            */
+        });
+    });
+</script>
 
 </body>
 </html>
