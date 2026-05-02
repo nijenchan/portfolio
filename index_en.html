@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claire Chan | Professional Portfolio</title>
+    <style>
+    :root {
+        --bg-color: #D0EFED;      
+        --text-color: #2d3748;    
+        --accent-color: #0891b2;  
+        --name-color: #144586;    
+        --about-label-color: #177DAF;
+        --card-bg: #ffffff;       
+    }
+
+    body {
+        font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.8;
+        margin: 0;
+        scroll-behavior: smooth;
+    }
+/* --- 標題字體加大修正 --- */
+    #contact h2, .video-section h2, #projects h2, #values h2 { 
+        font-size: 2.8rem !important; font-weight: 700 !important;
+        letter-spacing: 3px; margin-bottom: 40px; text-align: center;
+    }
+    .hero .eng-name { 
+        font-size: 1.8rem !important; color: #64748b; letter-spacing: 5px; 
+        margin-bottom: 15px; font-weight: 600; 
+    }
+    .hero h1 { font-size: 3.5rem; color: var(--name-color); font-weight: 700; margin: 0; }
+     /* --- 核心價值卡片統整版 --- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .card { 
+        background: #ffffff; padding: 30px; border-radius: 8px; border-left: 4px solid var(--accent-color); cursor: pointer; 
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); max-height: 135px; overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);position: relative;
+    }
+    .details { padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 15px; color: #475569; }
+    .details ul { padding-left: 20px; margin-top: 10px; list-style-type: disc !important; }
+    .card h3 { color: var(--name-color); margin-top: 0; font-size: 1.3rem; margin-bottom: 10px; }
+    .summary { font-size: 1rem; color: #64748b; margin-bottom: 1.5; }
+    .details li { margin-bottom: 12px; line-height: 1.6; display: list-item; }
+    .details strong { font-weight: bold; color: var(--name-color); display: inline-block; margin-right: 5px; }
+ /* 游標移上去的回饋：等比稍微放大，但不展開內容 */
+.card:hover { 
+    transform: scale(1.03); 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    background: #f8fafc;
+}
+
+/* 當點擊後，JavaScript 會幫卡片加上 .is-expanded 這個類別 */
+.card.is-expanded { 
+    max-height: 1000px; /* 展開高度 */
+    border-left-color: var(--name-color);
+    transform: scale(1); /* 展開後恢復原大小，避免視覺太突兀 */
+}
+
+/* 讓細節內容預設透明，展開後才顯現（這樣動畫比較順） */
+.details { 
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
+}
+
+.card.is-expanded .details { 
+    opacity: 1; 
+}
+
+/* --- 專案成就：16:9 精確對齊與一秒一跳 --- */
+  .project-container { display: flex; flex-direction: column; gap: 80px; }
+  .project-row { display: flex; align-items: center; gap: 40px; }
+  .project-row:nth-child(even) { flex-direction: row-reverse; }
+
+    .slideshow-viewport { width: 500px; height: 281px; overflow: hidden; border-radius: 12px; 
+        flex-shrink: 0; background: #eee; }
+    .slideshow-track { display: flex; height: 100%; animation-play-state: paused; /* 預設靜止 */ }
+    .slideshow-track img { width: 500px; height: 281px; object-fit: cover; flex-shrink: 0; }
+
+/* 只有滑鼠移到該列（row）時才啟動動畫 */
+.project-row:nth-child(1):hover .slideshow-track { animation: slide-p1 20s steps(10) infinite !important; 
+    animation-play-state: running; }
+.project-row:nth-child(2):hover .slideshow-track { animation: slide-p2 12s steps(6) infinite !important; 
+    animation-play-state: running; }
+.project-row:nth-child(3):hover .slideshow-track { animation: slide-p3 10s steps(5) infinite !important; 
+    animation-play-state: running; }
+
+/* 精確位移百分比 */
+@keyframes slide-p1 { 0% { transform: translateX(0); } 100% { transform: translateX(-90.909%); } }
+@keyframes slide-p2 { 0% { transform: translateX(0); } 100% { transform: translateX(-85.714%); } }
+@keyframes slide-p3 { 0% { transform: translateX(0); } 100% { transform: translateX(-83.333%); } }
+
+
+    /* 基礎排版其餘部分保持不變... */
+    section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+    .hero { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: #ffffff; padding: 0 5%; gap: 60px; }
+    .profile-img-rect { width: 350px; height: 500px; object-fit: cover; box-shadow: 20px 20px 0px var(--name-color); }
+    .hero h1 { font-size: 3.5rem; color: var(--name-color); font-weight: 700; margin: 0; }
+    .about-text { max-width: 450px; text-align: justify; border-left: 1px solid #ddd; padding-left: 20px; }
+    .video-wrapper { max-width: 800px; margin: 40px auto; }
+    .iframe-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
+    .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .cta-main { display: inline-block; background: var(--name-color); color: #fff; padding: 12px 35px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+    footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; background: #f8fafc; }
+        
+        /* --- 全域置中修正 --- */
+    .video-section, .contact-section { 
+        text-align: center; 
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 確保內容水平置中 */
+        justify-content: center;
+    }
+
+    .video-description { 
+        width: 100%;
+        max-width: 800px;
+        margin: 30px auto 0;
+        text-align: center; 
+    }
+
+    .video-description p { 
+        font-size: 1.1rem; /* 確保字體大小 */
+        color: #cbd5e1;
+        line-height: 1.8;
+    }
+        /* --- 語言切換：右上角精美膠囊 --- */
+    .lang-switch {
+        position: fixed; top: 25px; right: 25px; z-index: 2000;
+        background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px);
+        padding: 8px 20px; border-radius: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px;
+        border: 1px solid rgba(255,255,255,0.5); transition: 0.3s;
+    }
+
+.lang-switch:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px); /* 輕微上浮 */
+}
+
+.lang-switch a {
+    text-decoration: none;
+    color: #64748b; /* 灰藍色，較文青 */
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+    padding: 2px 0;
+}
+
+.lang-switch a:hover {
+    color: var(--accent-color); /* 移上去變青色 */
+}
+
+/* 分隔線美化 */
+.lang-divider {
+    width: 1px;
+    height: 12px;
+    background: #e2e8f0;
+}
+
+/* 當前語言的特別標註 (可選) */
+.lang-active {
+    color: var(--name-color) !important;
+}
+     /* --- Modal 彈窗 --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #fff; padding: 40px; border-radius: 15px; max-width: 600px; width: 100%; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #64748b; }
+
+        /* --- 聯繫區 --- */
+        .contact-section { text-align: center; padding: 120px 20px; background: rgba(255,255,255,0.3); }
+        .contact-links { margin-top: 40px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .social-link { color: var(--accent-color); text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .social-link:hover { text-decoration: underline; }
+        .cta-main { display: inline-block; background: var(--accent-color); color: #fff; padding: 15px 45px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-bottom: 30px; transition: 0.3s; }
+        .cta-main:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        footer { text-align: center; padding: 50px; font-size: 0.85rem; color: #64748b; }
+    </style>
+</head>
+<body>
+    
+    <div class="lang-switch">
+    <!-- 點擊跳轉回中文版檔案 -->
+    <a href="index.html">中文</a>
+    <div class="lang-divider"></div>
+    <!-- EN 是當前頁面 -->
+    <a href="#" class="lang-active">EN</a>
+</div>
+    <section class="hero">
+        <div class="hero-left">
+            <img src="self.jpg" alt="Claire Chan" class="profile-img-rect">
+        </div>
+        <div class="hero-right">
+            <div class="eng-name">Claire Chan</div>
+            <h1>詹妮臻</h1>
+            <p style="letter-spacing: 5px; color: #64748b; margin-bottom: 30px;">Cross-functional Collaboration | Project Management | International Trade</p>
+            <span class="about-label">About Me</span>
+            <p class="about-text">
+                Currently studying on a one-year program at the International Trade Institute (ITI), Hsinchu, which has enhanced my business communication and presentation skills in English; 1 year of experience in large-scale exhibition project execution; logical planning, progress control, and cross-team collaboration; familiar with AI tools (ChatGPT/Gemini) command optimization; interested in a Project Manager position.
+            </p>
+        </div>
+    </section>
+
+<section id="values">
+        <h2 style="color: var(--accent-color);">Core Values</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Structured Project Management</h3>
+                <p class="summary">Precisely managed 20+ project lifecycles to ensure high-quality, on-time delivery.</p>
+                <div class="details" >
+                    <ul>
+                        <li><strong>Strategic Scheduling: </strong>Expert in task decomposition and milestone setting; capable of proactively identifying and eliminating potential problems to maintain steady team output.</li>
+                        <li><strong>Process Optimization: </strong>Skilled at breaking down complex workflows and optimizing resource allocation in high-pressure, multi-track environments.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Cross-functional Collaboration</h3>
+                <p class="summary">Translating diverse requirements into structured, logical proposals.</p>
+                <div class="details" >
+                    <ul>
+                        <li><strong>Communication & Leadership: </strong>Facilitates team consensus through structured guidance and critical thinking, enhancing decision-making quality and speed.</li>
+                        <li><strong>Resource Integration: </strong>Expert at aligning cross-departmental information and multimedia assets with brand objectives and stakeholder feedback./li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Business Writing & Decision-making</h3>
+                <p class="summary">Leveraging analytical frameworks to drive substantive business decisions and professional reporting.</p>
+                <div class="details" >
+                    <ul>
+                        <li><strong>Structured Writing: </strong>Translates complex needs into clear, data-supported documentation, ensuring consistency and persuasion.</li>
+                        <li><strong>Meeting Facilitation: </strong>Experienced in business meeting simulation; effective at gathering insights through guided inquiry and accurately summarizing actionable results.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 style="color: var(--accent-color);">Project Achievements</h2>
+        <div class="project-container">
+            
+            <div class="project-row">
+                <div class="slideshow-viewport">
+                    <div class="slideshow-track" style="animation-duration: 25s; width: 1100%;">
+                        <img src="hugrevolution.jpg"> <img src="group.jpg"> <img src="1.jpg"> 
+                        <img src="2.jpg"> <img src="3.jpg"> <img src="4.jpg"> 
+                        <img src="5.jpg"> <img src="6.JPG"> <img src="7.jpg"> <img src="8.jpg"> <img src="hugrevolution.jpg">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Hug Revolution</h3>
+                    <p>Directed 20+ videos and managed exhibitions at Huashan Creative Park. I transformed complex information into a high-resonance opening film, ensuring a seamless connection between digital content and physical events.</p>
+<a href="https://artogo.co/zh-TW/exhibition/hugrevolution/work/4f087341de4f" target="_blank" class="cta-main" style="padding: 10px 25px; font-size: 0.9rem; margin-right: 10px;">View Online Exhibition</a>
+<a href="https://youtube.com/playlist?list=PLeprbZIfYKAIgTnp2_DFgl8FFhiX2Z9AQ&si=nSJLAPKJ9lNpKAzp" target="_blank" class="cta-main" style="padding: 10px 25px; font-size: 0.9rem;">Hug Revolution Videos</a>                  
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div class="slideshow-viewport">
+                    <div class="slideshow-track" style="animation-duration: 15s; width: 700%;">
+                        <img src="paperbattery.png"> <img src="flint1.jpg"> <img src="flint2.png"> 
+                        <img src="flint3.png"> <img src="flint4.png"> <img src="flint5.png"> <img src="paperbattery.png">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Flint Paper Battery B2B Pitch</h3>
+                    <p>Participated in a B2B pitch competition and delivered a full English presentation with a Q&A session. I translated complex technical specifications into visual business proposals.</p>
+                    <a href="https://canva.link/j6c1r16dtv9bnuz" target="_blank" class="cta-main" style="padding: 10px 25px; font-size: 0.9rem;">View Presentation</a>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div class="slideshow-viewport">
+                    <div class="slideshow-track" style="animation-duration: 12s; width: 600%;">
+                        <img src="strategicentry.png"> <img src="japan1.jpg"> <img src="japan2.png"> 
+                        <img src="japan3.jpg"> <img src="japan4.png"> <img src="strategicentry.png">
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Cross-Cultural Market Entry Strategy</h3>
+                    <p>Repositioned Taiwan mangoes as premium gift boxes for the Japanese market. I developed diversified packaging, pricing and channel strategies, utilizing AI-simulated booths to enhance brand exposure.</p>
+                    <a href="https://canva.link/rgr2x0e691w362g" target="_blank" class="cta-main" style="padding: 10px 25px; font-size: 0.9rem;">View Presentation</a>
+                </div>
+            </div>
+
+        </div>
+  
+  <section class="video-section" style="background: #111b2d;">
+    <h2 style="color: var(--accent-color);">Creative Works</h2> <!-- 大標改為 Works -->
+    
+    <div class="video-wrapper">
+        <!-- 第一部：畢業展覽開幕片 (對調到前面) -->
+        <h3 style="color: #fff; margin-bottom: 20px;">Graduation Exhibition Opening Film</h3>
+        <div class="iframe-container" style="margin-bottom: 60px;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/5pbfEfy8S6A?si=bb7sr0ZZ_BsxJyGO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+
+        <!-- 第二部：30秒創作-Light -->
+        <h3 style="color: #fff; margin-bottom: 20px;">30-Second Creative Work - "Light"</h3>
+        <div class="iframe-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/23Ez3gEIaHk?si=qRV_LcecM9AN4CF9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <!-- 原本 light.JPG 圖片已刪除 -->
+            <p style="color: #94a3b8; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+                Inspired by sunlight, the project explores warm elements and light and shadow across the campus. Paired with a slow soundtrack, it creates a calm atmosphere.
+            </p>
+        </div>
+    </div>
+</section>
+    <section id="contact" class="contact-section">
+        <h2 style="color: var(--name-color);">Contact Me</h2>
+       <p style="max-width: none; margin: 0 auto 30px; white-space: nowrap;">
+    Thank you for visiting. If you are looking for a partner with strong logic and execution skills, I would love to hear from you. Let’s create something great together!
+</p>
+      
+        <a href="mailto:nijenchan02@gmail.com" class="cta-main">Send Email</a>
+        
+        <div class="contact-links">
+            <a href="https://youtube.com/playlist?list=PLeprbZIfYKAKkfQjo4vyUtk1rPA7oEvSZ&si=ctk0TCMZ-7wQkjvE" target="_blank" class="social-link">YouTube Portfolio</a>
+            <a href="https://www.linkedin.com/in/ni-jen-chan" target="_blank" class="social-link">LinkedIn</a>
+            <a href="resume.pdf" target="_blank" class="social-link">English Resume</a>
+            <a href="chresume.pdf" target="_blank" class="social-link">Chinese Resume</a>
+        </div>
+    </section>
+
+    <footer>&copy; 2026 Claire Chan. All Rights Reserved.</footer>
+    <script>
+    // 取得所有卡片
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            // 切換 .is-expanded 類別：點一下加上去，再點一下移除
+            card.classList.toggle('is-expanded');
+            
+            // (選配) 如果你希望點開一張時，自動收起其他的，可以改用下面這段：
+            /*
+            cards.forEach(otherCard => {
+                if (otherCard !== card) otherCard.classList.remove('is-expanded');
+            });
+            card.classList.toggle('is-expanded');
+            */
+        });
+    });
+</script>
+
+</body>
+</html>
