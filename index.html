@@ -331,7 +331,12 @@
         </div>
     </section>
 
-    <footer>&copy; 2026 Claire Chan. All Rights Reserved.</footer>
+<!-- 頁尾：背景色白色 -->
+<footer style="background: #ffffff; padding: 50px; text-align: center; color: #64748b; font-size: 0.85rem;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+        &copy; 2026 Claire Chan. All Rights Reserved.
+    </div>
+</footer>
     <script>
     // 取得所有卡片
     const cards = document.querySelectorAll('.card');
@@ -341,13 +346,7 @@
             // 切換 .is-expanded 類別：點一下加上去，再點一下移除
             card.classList.toggle('is-expanded');
             
-            // (選配) 如果你希望點開一張時，自動收起其他的，可以改用下面這段：
-            /*
-            cards.forEach(otherCard => {
-                if (otherCard !== card) otherCard.classList.remove('is-expanded');
-            });
-            card.classList.toggle('is-expanded');
-            */
+           
         });
     });
 </script>
