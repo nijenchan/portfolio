@@ -296,8 +296,9 @@
 
         </div>
 
-<!-- 加上 margin-top 來推開距離，並用 !important 確保寬度 100% 生效 -->
-<section class="video-section" style="background: #ffffff; width: 100vw !important; max-width: none !important; margin: 80px 0 0 0 !important; padding: 100px 0; position: relative; left: 50%; transform: translateX(-50%);">    <h2 style="color: var(--accent-color);">Creative Works</h2> 
+        <!-- 移除掉 100vw 和 transform，讓它回歸 1100px 框架 -->
+<section class="video-section" style="background: #ffffff; margin-top: 80px; padding: 100px 20px;">
+    <h2 style="color: var(--accent-color);">Creative Works</h2> 
     <div class="video-wrapper">
         <h3 style="color: var(--name-color); margin-bottom: 25px; font-size: 1.8rem;">Graduation Exhibition Opening Film</h3>
        <div class="iframe-container" style="margin-bottom: 60px;">
@@ -316,17 +317,15 @@
         </div>
     </div>
 </section>
- 
-    <section id="contact" class="contact-section">
+ <!-- 聯絡區：背景色留在這 -->
+<div style="background: rgba(255,255,255,0.3); width: 100%;">
+    <section id="contact" class="contact-section" style="padding: 120px 20px;">
         <h2 style="color: var(--name-color);">Contact Me</h2>
-       <p style="max-width: none; margin: 0 auto 30px;">
-    Thank you for visiting. If you are looking for a partner with strong logic and execution skills,<br>
-I would love to hear from you. Let’s create something great together!
-       </p>
-
-      
+        <p style="margin-bottom: 30px;">
+            Thank you for visiting. If you are looking for a partner with strong logic and execution skills,<br>
+            I would love to hear from you. Let’s create something great together!
+        </p>
         <a href="mailto:nijenchan02@gmail.com" class="cta-main">Send Email</a>
-        
         <div class="contact-links">
             <a href="https://youtube.com/playlist?list=PLeprbZIfYKAKkfQjo4vyUtk1rPA7oEvSZ&si=ctk0TCMZ-7wQkjvE" target="_blank" class="social-link">YouTube Portfolio</a>
             <a href="https://www.linkedin.com/in/ni-jen-chan" target="_blank" class="social-link">LinkedIn</a>
@@ -334,8 +333,15 @@ I would love to hear from you. Let’s create something great together!
             <a href="chresume.pdf" target="_blank" class="social-link">Chinese Resume</a>
         </div>
     </section>
+</div>
 
-    <footer>&copy; 2026 Claire Chan. All Rights Reserved.</footer>
+<!-- 頁尾：背景色白色 -->
+<footer style="background: #ffffff; padding: 50px; text-align: center; color: #64748b; font-size: 0.85rem;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+        &copy; 2026 Claire Chan. All Rights Reserved.
+    </div>
+</footer>
+   
     <script>
     // 取得所有卡片
     const cards = document.querySelectorAll('.card');
